@@ -1,0 +1,81 @@
+﻿<Window x:Class="Copy_Commander.View.MainDisplay"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Copy_Commander.View"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        mc:Ignorable="d"
+        Title="MainDisplay" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <local:DirectoryListView Grid.Column="0"
+                                     Margin="2"
+                                     DataContext="{Binding LeftListViewModel}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                            <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+AncestorType={x:Type Window}}, Path=DataContext.SetLeftPriorityCommand}"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+AncestorType={x:Type Window}}, Path=DataContext.DisallowCopyCommand}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </local:DirectoryListView>
+
+            <local:DirectoryListView Grid.Column="1"
+                                     Margin="2"
+                                     DataContext="{Binding RightListViewModel}" >
+                </local:DirectoryListView>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                    <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+AncestorType={x:Type Window}}, Path=DataContext.SetRightPriorityCommand}"/>
+                </i:EventTrigger>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+AncestorType={x:Type Window}}, Path=DataContext.DisallowCopyCommand}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Grid>
+        <Grid Grid.Row="1" Margin="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Name="HelpFilesButton"
+                    Grid.Column="0"
+                    Margin="1"
+                    Padding="2"
+                    Content="? Wyjaśnienie plików ?"
+                    Command="{Binding DisplayFilesHelpCommand}"/>
+
+            <Button Name="CopyButton"
+                    Grid.Column="1"
+                    Margin="1"
+                    Padding="2"
+                    IsEnabled="{Binding AllowCopy}"
+                    Content="{Binding CopyDirection}"
+                    Command="{Binding CopyCommand}"/>
+
+            <Button Name="HelpOpButton"
+                    Grid.Column="2"
+                    Margin="1"
+                    Padding="2"
+                    Content="? Wyjaśnienie operacji ?"
+                    Command="{Binding DisplayOpHelpCommand}"/>
+        </Grid>
+    </Grid>
+</Window>
